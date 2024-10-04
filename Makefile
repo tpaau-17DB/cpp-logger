@@ -2,7 +2,7 @@ CC = g++
 
 SRC = src
 BIN = bin
-CFLAGS = -Wall -g -std=c++17
+CFLAGS = -lncurses -Wall -g -std=c++17
 
 TARGET = test
 
