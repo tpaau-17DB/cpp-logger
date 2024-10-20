@@ -47,6 +47,19 @@ int main()
         Logger::PrintErr("error");
     }
 
+    cout<<endl<<"Testing printing with datetime"<<endl;
+    Logger::SetNoColor(false);
+    Logger::SetShowDateTime(true);
+    for (int i = 0; i < 4; i++)
+    {
+        cout<<endl<<"Verbosity set to "<<i<<endl;
+        Logger::SetVerbosity(Logger::LogLevel(i));
+        Logger::PrintDebug("debug");
+        Logger::PrintLog("info");
+        Logger::PrintWarn("warning");
+        Logger::PrintErr("error");
+    }
+
     cout<<endl<<"----------test end----------"<<endl;
     return 0;
 }
