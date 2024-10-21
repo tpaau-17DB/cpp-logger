@@ -139,6 +139,9 @@ void Logger::ClearLogBufer()
 
 void Logger::ReleaseLogBuffer()
 {
+    if (logBuffer.size() == 0)
+        return;
+
     if (ncursesMode)
     {
         endwin();
@@ -232,15 +235,18 @@ void Logger::print(const string &message, const int prior, const int layer)
     {
         logBuffer.push_back(spaces + header + message + "\n");
     }
-    else if (ncursesMode)
-    {
-        endwin();
-        printf("%s\n", (spaces + header + message).c_str());
-        fflush(stdout);
-    }
     else
     {
-        cout<<spaces<<header<<message<<endl;
+        if (ncursesMode)
+        {
+            endwin();
+            printf("%s\n", (spaces + header + message).c_str());
+            fflush(stdout);
+        }
+        else
+        {
+            cout<<spaces<<header<<message<<endl;
+        }
     }
 }
 
