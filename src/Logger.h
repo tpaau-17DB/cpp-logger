@@ -2,7 +2,7 @@
 #define LOGGER_H
 
 #include <string>
-#include <map>
+#include <vector>
 
 class Logger 
 {
@@ -27,6 +27,7 @@ class Logger
         static void SetNoColor(const bool nocolor);
         static void SetShowDateTime(const bool enabled);
         static void SetDatetimeFormat(const std::string format);
+        static void SetUseLogBuffer(const bool useLogBuffer);
 
         
         // PRINTING FUNCTIONS
@@ -38,6 +39,11 @@ class Logger
 	static void PrintWarn(const std::string  message);
 	static void PrintErr(const std::string message, const int layer);
 	static void PrintErr(const std::string message);
+
+
+        // OTHER PUBLIC FUNCTIONS
+        static void ClearLogBufer();
+        static void ReleaseLogBuffer();
 
 
     private:
@@ -57,12 +63,14 @@ class Logger
 
 
         // DYNAMIC PRIVATE VARIABLES
+        static std::vector<std::string> logBuffer;
         static std::string dateTimeFormat;
 	static Logger::LogLevel logLevel;
         static bool overrideFiltering;
         static bool ncursesMode;
         static bool nocolor;
         static bool dateTimeEnabled;
+        static bool useLogBuffer;
 };
 
 #endif

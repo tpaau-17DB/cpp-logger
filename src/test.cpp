@@ -4,8 +4,12 @@
 
 using namespace std;
 
+bool logAccumulating = true;
+
 int main()
 {
+    Logger::SetUseLogBuffer(logAccumulating);
+
     cout<<"----------test start----------"<<endl<<endl;
 
     cout<<"testing log filtering"<<endl;
@@ -59,6 +63,8 @@ int main()
         Logger::PrintWarn("warning");
         Logger::PrintErr("error");
     }
+
+    Logger::ReleaseLogBuffer();
 
     cout<<endl<<"----------test end----------"<<endl;
     return 0;
