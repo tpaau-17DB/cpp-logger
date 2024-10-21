@@ -27,7 +27,7 @@ class Logger
         static void SetNoColor(const bool nocolor);
         static void SetShowDateTime(const bool enabled);
         static void SetDatetimeFormat(const std::string format);
-        static void SetUseLogBuffer(const bool useLogBuffer);
+        static void SetUseLogAccumulation(const bool useLogAccumulation);
 
         
         // PRINTING FUNCTIONS
@@ -44,6 +44,7 @@ class Logger
         // OTHER PUBLIC FUNCTIONS
         static void ClearLogBufer();
         static void ReleaseLogBuffer();
+        static void WriteToBuffer(const std::string& str);
 
 
     private:
@@ -70,7 +71,7 @@ class Logger
         static bool ncursesMode;
         static bool nocolor;
         static bool dateTimeEnabled;
-        static bool useLogBuffer;
+        static bool useLogAccumulation;
 };
 
 #endif

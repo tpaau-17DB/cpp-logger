@@ -31,7 +31,7 @@ bool Logger::overrideFiltering = false;
 bool Logger::ncursesMode = false;
 bool Logger::nocolor = false;
 bool Logger::dateTimeEnabled = false;
-bool Logger::useLogBuffer = false;
+bool Logger::useLogAccumulation = false;
 
 
 // Setters
@@ -68,9 +68,9 @@ void Logger::SetDatetimeFormat(const string format)
         Logger::PrintErr("Invalid datetime format specified: '" + format + "'.");
 }
 
-void Logger::SetUseLogBuffer(const bool useLogBuffer)
+void Logger::SetUseLogAccumulation(const bool useLogAccumulation)
 {
-    Logger::useLogBuffer = useLogBuffer;
+    Logger::useLogAccumulation = useLogAccumulation;
 }
 
 
@@ -129,7 +129,7 @@ void Logger::ClearLogBufer()
     logBuffer = vector<string>();
     if (!nocolor)
     {
-        logBuffer.push_back(RED + "[CLEARED]" + RESET + "\n");
+        logBuffer.push_back(BLUE + "[CLEARED]" + RESET + "\n");
     }
     else
     {
@@ -159,6 +159,11 @@ void Logger::ReleaseLogBuffer()
         }
         cout<<stream.str();
     }
+}
+
+void Logger::WriteToBuffer(const string& str)
+{
+    logBuffer.push_back(str);
 }
 
 
@@ -223,7 +228,7 @@ void Logger::print(const string &message, const int prior, const int layer)
     string spaces = string(layer * 2, ' ');
     string header = getHeader(prior);
 
-    if (useLogBuffer)
+    if (useLogAccumulation)
     {
         logBuffer.push_back(spaces + header + message + "\n");
     }
@@ -247,9 +252,9 @@ string Logger::getDateTime()
     if (!now)
     {
         if (!nocolor)
-            return RED + "[error: null pointer] " + RESET;
+            return RED + "[ERROR: NULL POINTER] " + RESET;
         else
-            return "[error: null pointer] ";
+            return "[ERROR: NULL POINTER] ";
     }
 
     char buffer[80];
