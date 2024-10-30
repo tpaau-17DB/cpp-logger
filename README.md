@@ -23,8 +23,7 @@ Use one of these methods to print logs:
 * `Logger::PrintWarn`
 * `Logger::PrintErr`
 
-Note that debug logs will be filtered out bu default.
-
+Note that debug logs will get filtered out bu default.
 
 </details>
 
@@ -45,11 +44,14 @@ Possible verbosity values are:
 * [2] Quiet - Only show warnings and errors
 * [3] ErrorsOnly - It's pretty self-explanatory
 
-You can either use `Logger::LogLevel` enum or an int value to set verbosity to desired level. Just make sure that verbosity value is in range of 0-3 or you will get an error.
+You can either use `Logger::LogLevel` enum or an int value to set verbosity to desired level.
+Just make sure that verbosity value is in range of 0-3 or you will get an error.
 
 # Overriding log filtering
 
 Log filtering can be disabled globally by calling `Logger::SetOverrideFiltering(bool)`.
+
+You can disable filtering per-log by passing `overridePriority` set to `true` to any of the logging functions.
 
 </details>
 
@@ -60,7 +62,7 @@ Log filtering can be disabled globally by calling `Logger::SetOverrideFiltering(
 
 Colored logs are enabled by default.
 Colors may not be supported by your terminal emulator, conflict with some features or just simply not fit your taste.
-`Logger::SetNoColor(bool)` can be used to toggle colored logs.
+`Logger::SetNoColor(bool)` can be used to toggle color.
 
 </details>
 
@@ -79,6 +81,6 @@ Log buffer can be cleared completely using `Logger::ClearLogBuffer()`.
 You can also write directly to the buffer using `Logger::WriteToBuffer(string&)`.
 
 When log accumulating is enabled logs need to be "released" manually by calling `Logger::ReleaseLogBuffer()` to make them appear in the terminal.
-Please make sure to clear the log buffer after releasing it, it does not happen automatically!
+Please make sure to clear the log buffer after releasing it, it doesn't happen automatically!
 
 </details>
