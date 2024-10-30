@@ -86,3 +86,15 @@ When log accumulating is enabled logs need to be "released" manually by calling 
 Please make sure to clear the log buffer after releasing it, it doesn't happen automatically!
 
 </details>
+
+<details>
+
+<summary>ncurses mode</summary>
+
+Using `ncurses` mode serves as a workaround to enable logs to be displayed directly in the terminal, even while `ncurses` is running.
+
+Method `Logger::SetNCursesMode(bool)` is used to toggle `ncurses` mode.
+
+When `ncurses` mode is enabled `endwin()` is called before the log is printed.
+
+</details>

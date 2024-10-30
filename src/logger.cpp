@@ -253,7 +253,7 @@ void Logger::print(const string &message, const int prior, const bool overrideFi
         }
         else
         {
-            cout<<spaces<<header<<message<<endl;
+            cout<<header<<message<<endl;
         }
     }
 }
