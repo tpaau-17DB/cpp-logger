@@ -33,9 +33,13 @@ class Logger
         
         // PRINTING FUNCTIONS
 	static void PrintDebug(const std::string& message);
+	static void PrintDebug(const std::string& message, const bool overrideFiltering);
 	static void PrintLog(const std::string& message);
+	static void PrintLog(const std::string& message, const bool overrideFiltering);
 	static void PrintWarn(const std::string& message);
-	static void PrintErr(const std::string& message);
+	static void PrintWarn(const std::string& message, const bool overrideFiltering);
+	static void PrintErr(const std::string& message);    
+        static void PrintErr(const std::string& message, const bool overrideFiltering); 
 
 
         // OTHER PUBLIC FUNCTIONS
@@ -46,7 +50,7 @@ class Logger
 
     private:
         // INTERNAL FUNCTIONS
-        static void print(const std::string &message, const int prior, const int layer);
+        static void print(const std::string &message, const int prior, const bool overrideFiltering);
         static std::string getHeader(const int id);
         static std::string getDateTime();
         static bool isValidDateTimeFormat(const std::string& format);
