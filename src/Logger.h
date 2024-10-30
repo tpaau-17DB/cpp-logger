@@ -32,13 +32,9 @@ class Logger
 
         
         // PRINTING FUNCTIONS
-        static void PrintDebug(const std::string& message, const int layer);
 	static void PrintDebug(const std::string& message);
-	static void PrintLog(const std::string& message, const int layer);
 	static void PrintLog(const std::string& message);
-	static void PrintWarn(const std::string&  message, const int layer);
 	static void PrintWarn(const std::string& message);
-	static void PrintErr(const std::string& message, const int layer);
 	static void PrintErr(const std::string& message);
 
 

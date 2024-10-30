@@ -92,19 +92,9 @@ Logger::LogLevel Logger::GetVerbosity()
 
 
 // Log methods
-void Logger::PrintDebug(const string& message, const int layer)
-{
-    Logger::print(message, 0, layer);
-}
-
 void Logger::PrintDebug(const string& message)
 {
     Logger::print(message, 0, 0);
-}
-
-void Logger::PrintLog(const string& message, const int layer)
-{
-    Logger::print(message, 1, layer);
 }
 
 void Logger::PrintLog(const string& message)
@@ -112,19 +102,9 @@ void Logger::PrintLog(const string& message)
     Logger::print(message, 1, 0);
 }
 
-void Logger::PrintWarn(const string& message, const int layer)
-{
-    Logger::print(message, 2, layer);
-}
-
 void Logger::PrintWarn(const string& message)
 {
     Logger::print(message, 2, 0);
-}
-
-void Logger::PrintErr(const string& message, const int layer)
-{
-    Logger::print(message, 3, layer);
 }
 
 void Logger::PrintErr(const string& message)
