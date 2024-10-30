@@ -36,7 +36,7 @@ Note that debug logs will be filtered out bu default.
 # By verbosity
 
 Verbosity controls which logs are getting suppressed and which are not.
-Methods `Logger::SetVerbosity(...)` are used to set the verbosity value.
+Method `Logger::SetVerbosity(...)` is used to set the verbosity value.
 
 Possible verbosity values are:
 
