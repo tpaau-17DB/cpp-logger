@@ -1,6 +1,5 @@
 #include "Logger.h"
 
-#include <cmath>
 #include <iostream>
 #include <ncurses.h>
 #include <cstdio>
@@ -38,6 +37,17 @@ bool Logger::useLogAccumulation = false;
 void Logger::SetVerbosity(const Logger::LogLevel logLevel) 
 {
     Logger::logLevel = logLevel;
+}
+
+void Logger::SetVerbosity(const int verbosity)
+{
+    bool cond = verbosity >= 0 && verbosity <= 3;
+    if (!cond)
+    {
+        Logger::PrintErr("Verbosity value must be between 0 and 3!");
+        return;
+    }
+    Logger::logLevel = Logger::LogLevel(verbosity);
 }
 
 void Logger::SetOverrideFiltering(const bool overrideFiltering)
@@ -82,42 +92,42 @@ Logger::LogLevel Logger::GetVerbosity()
 
 
 // Log methods
-void Logger::PrintDebug(const string message, const int layer)
+void Logger::PrintDebug(const string& message, const int layer)
 {
     Logger::print(message, 0, layer);
 }
 
-void Logger::PrintDebug(const string message)
+void Logger::PrintDebug(const string& message)
 {
     Logger::print(message, 0, 0);
 }
 
-void Logger::PrintLog(const string message, const int layer)
+void Logger::PrintLog(const string& message, const int layer)
 {
     Logger::print(message, 1, layer);
 }
 
-void Logger::PrintLog(const string message)
+void Logger::PrintLog(const string& message)
 {
     Logger::print(message, 1, 0);
 }
 
-void Logger::PrintWarn(const string message, const int layer)
+void Logger::PrintWarn(const string& message, const int layer)
 {
     Logger::print(message, 2, layer);
 }
 
-void Logger::PrintWarn(const string message)
+void Logger::PrintWarn(const string& message)
 {
     Logger::print(message, 2, 0);
 }
 
-void Logger::PrintErr(const string message, const int layer)
+void Logger::PrintErr(const string& message, const int layer)
 {
     Logger::print(message, 3, layer);
 }
 
-void Logger::PrintErr(const string message)
+void Logger::PrintErr(const string& message)
 {
     Logger::print(message, 3, 0);
 }
