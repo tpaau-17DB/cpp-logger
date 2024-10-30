@@ -60,6 +60,7 @@ You can disable filtering per-log by passing `overridePriority` set to `true` to
 
 <summary>Using COLORS!</summary>
 
+
 Colored logs are enabled by default.
 Colors may not be supported by your terminal emulator, conflict with some features or just simply not fit your taste.
 `Logger::SetNoColor(bool)` can be used to toggle color.
@@ -70,6 +71,7 @@ Colors may not be supported by your terminal emulator, conflict with some featur
 <details>
 
 <summary>Enabling log buffering/accumulating</summary>
+
 
 Log buffering is a feature that manages logs more efficiently.
 When log buffering is enabled logger stores messages in RAM instead of printing them directly into the terminal. 
