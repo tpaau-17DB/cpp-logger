@@ -23,7 +23,7 @@ Use one of these methods to print logs:
 * `Logger::PrintWarn`
 * `Logger::PrintErr`
 
-Note that debug logs will get filtered out bu default.
+Note that debug logs will get filtered out by default.
 
 </details>
 
@@ -34,18 +34,18 @@ Note that debug logs will get filtered out bu default.
 
 # By verbosity
 
-Verbosity controls which logs are getting suppressed and which are not.
+Verbosity controls which logs are suppressed and which are not.
 Method `Logger::SetVerbosity(...)` is used to set the verbosity value.
 
 Possible verbosity values are:
 
 * [0] All - Don't suppress any logs
-* [1] Standard - Only suppress debug logs (dafault value)
+* [1] Standard - Only suppress debug logs (default value)
 * [2] Quiet - Only show warnings and errors
-* [3] ErrorsOnly - It's pretty self-explanatory
+* [3] ErrorsOnly - This is pretty self-explanatory
 
 You can either use `Logger::LogLevel` enum or an int value to set verbosity to desired level.
-Just make sure that verbosity value is in range of 0-3 or you will get an error.
+Just make sure that verbosity value is in the range of 0-3 or you will get an error.
 
 # Overriding log filtering
 
@@ -74,7 +74,7 @@ Colors may not be supported by your terminal emulator, conflict with some featur
 
 
 Log buffering is a feature that manages logs more efficiently.
-When log buffering is enabled logger stores messages in RAM instead of printing them directly into the terminal. 
+When log buffering is enabled, logger stores messages in RAM instead of printing them directly into the terminal. 
 
 To toggle log buffering use `Logger::SetUseLogAccumulating(bool)`.
 
@@ -83,7 +83,7 @@ Log buffer can be cleared completely using `Logger::ClearLogBuffer()`.
 You can also write directly to the buffer using `Logger::WriteToBuffer(string&)`.
 
 When log accumulating is enabled logs need to be "released" manually by calling `Logger::ReleaseLogBuffer()` to make them appear in the terminal.
-Please make sure to clear the log buffer after releasing it, it doesn't happen automatically!
+Please make sure to clear the log buffer after releasing it; it doesn't happen automatically!
 
 </details>
 
