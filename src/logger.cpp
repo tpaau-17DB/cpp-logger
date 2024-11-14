@@ -157,7 +157,6 @@ void Logger::ReleaseLogBuffer()
     {
         for (const Logger::BufferedLog& log : logBuffer)
         {
-            //if (log.LogLevel < logLevel && !overrideFiltering && !Logger::overrideFiltering) continue;
             if (log.LogLevel >= logLevel || Logger::overrideFiltering || log.OverrideFiltering)
             {
                 stream<<getHeader(log.LogLevel)<<getDateTimeHeader(log.Date)<<log.Message<<"\n";
@@ -168,7 +167,6 @@ void Logger::ReleaseLogBuffer()
     {
         for (const Logger::BufferedLog& log : logBuffer)
         {
-            //if (log.LogLevel < logLevel && !overrideFiltering && !Logger::overrideFiltering) continue;
             if (log.LogLevel >= logLevel || Logger::overrideFiltering || log.OverrideFiltering)
             {
                 stream<<getHeader(log.LogLevel)<<log.Message<<"\n";
