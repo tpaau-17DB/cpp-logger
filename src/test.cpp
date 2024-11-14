@@ -27,7 +27,7 @@ int main()
         Logger::PrintErr("error");
     }
 
-    Logger::SetNoColor(true);
+    Logger::SetNoColor(false);
 
     Logger::ReleaseLogBuffer();
 

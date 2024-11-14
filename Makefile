@@ -39,10 +39,6 @@ build: pre-build $(OBJS)
 clean:
 	rm -f $(BIN)/*
 
-install: $(BIN)/$(TARGET)
-	@echo "Installing $(TARGET) to $(TARGET_DIR)"
-	sudo cp $(BIN)/$(TARGET) $(TARGET_DIR)
-
 uninstall:
 	@echo "Removing $(TARGET) from $(TARGET_DIR)"
 	sudo rm -f $(TARGET_DIR)/$(TARGET)

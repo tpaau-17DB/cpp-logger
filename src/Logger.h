@@ -8,6 +8,7 @@
 class Logger 
 {
     public:
+        // PUBLIC STRUCTS
         enum LogLevel
         {
             All = 0,
@@ -19,6 +20,7 @@ class Logger
 
         // GETTERS
 	static Logger::LogLevel GetVerbosity();
+        static bool GetLogBufferingEnabled();
 
 
         // SETTERS
@@ -52,17 +54,20 @@ class Logger
         // PRIVATE STRUCTS
         struct BufferedLog
         {
-            bool OverrideFiltering;
-            short LogLevel;
             std::string Message;
             time_t Date;
+            short LogLevel;
+            bool OverrideFiltering;
         };
+
 
         // INTERNAL FUNCTIONS
         static void print(const std::string &message, const int prior, const bool overrideFiltering);
         static std::string getHeader(const int id);
-        static std::string getDateTimeHeader(time_t time);
-        static bool isValidDateTimeFormat(const std::string& format);
+        static std::string getDatetimeHeader(time_t time);
+        static bool isValidDatetimeFormat(const std::string& format);
+        static std::string colorify(const std::string& color, const std::string& toColorify);
+        static std::string logLevelToColor(const unsigned short logLevel);
 
 
         // CONSTS
