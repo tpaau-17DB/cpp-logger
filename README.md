@@ -60,7 +60,6 @@ You can disable filtering per-log by passing `overridePriority` set to `true` to
 
 <summary>Using COLORS!</summary>
 
-
 Colored logs are enabled by default.
 Colors may not be supported by your terminal emulator, conflict with some features or just simply not fit your taste.
 `Logger::SetNoColor(bool)` can be used to toggle color.
@@ -72,7 +71,6 @@ Colors may not be supported by your terminal emulator, conflict with some featur
 
 <summary>Enabling log buffering/accumulating</summary>
 
-
 Log buffering is a feature that manages logs more efficiently.
 When log buffering is enabled, logger stores messages in RAM instead of printing them directly into the terminal. 
 
@@ -83,6 +81,9 @@ Log buffer can be cleared completely using `Logger::ClearLogBuffer()`.
 You can also write directly to the buffer using `Logger::WriteToBuffer(string&)`.
 
 When log accumulating is enabled logs need to be "released" manually by calling `Logger::ReleaseLogBuffer()` to make them appear in the terminal.
+
+Log formatting and filtering will be applied at buffer realease, not when a logging function is invoked!
+
 Please make sure to clear the log buffer after releasing it; it doesn't happen automatically!
 
 </details>
@@ -117,4 +118,5 @@ When this is enabled logs will appear like this:
 ```
 
 You can customize datetime fromat with `Logger::SetDatetimeFromat(string)`.
+
 </details>
