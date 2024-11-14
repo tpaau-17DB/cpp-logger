@@ -87,6 +87,7 @@ Please make sure to clear the log buffer after releasing it; it doesn't happen a
 
 </details>
 
+
 <details>
 
 <summary>ncurses mode</summary>
@@ -97,4 +98,23 @@ Method `Logger::SetNCursesMode(bool)` is used to toggle `ncurses` mode.
 
 When `ncurses` mode is enabled `endwin()` is called before the log is printed.
 
+</details>
+
+
+<details>
+
+<summary>Displaying datetime</summary>
+
+The Display Dates feature adds a timestamp to each log entry.
+You can toggle showing dates with `Logger::SetShowDatetime(bool)` function.
+
+When this is enabled logs will appear like this:
+```
+[DEB] [14:21:24] debug
+[LOG] [14:21:24] info
+[WAR] [14:21:24] warning
+[ERR] [14:21:24] error
+```
+
+You can customize datetime fromat with `Logger::SetDatetimeFromat(string)`.
 </details>

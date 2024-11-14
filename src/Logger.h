@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+#include <ctime>
 
 class Logger 
 {
@@ -26,7 +27,7 @@ class Logger
         static void SetOverrideFiltering(const bool overrideFiltering);
         static void SetNCursesMode(const bool mode);
         static void SetNoColor(const bool nocolor);
-        static void SetShowDateTime(const bool enabled);
+        static void SetShowDatetime(const bool enabled);
         static void SetDatetimeFormat(const std::string format);
         static void SetUseLogAccumulation(const bool useLogAccumulation);
 
@@ -45,14 +46,22 @@ class Logger
         // OTHER PUBLIC FUNCTIONS
         static void ClearLogBufer();
         static void ReleaseLogBuffer();
-        static void WriteToBuffer(const std::string& str);
 
 
     private:
+        // PRIVATE STRUCTS
+        struct BufferedLog
+        {
+            bool OverrideFiltering;
+            short LogLevel;
+            std::string Message;
+            time_t Date;
+        };
+
         // INTERNAL FUNCTIONS
         static void print(const std::string &message, const int prior, const bool overrideFiltering);
         static std::string getHeader(const int id);
-        static std::string getDateTime();
+        static std::string getDateTimeHeader(time_t time);
         static bool isValidDateTimeFormat(const std::string& format);
 
 
@@ -65,7 +74,7 @@ class Logger
 
 
         // DYNAMIC PRIVATE VARIABLES
-        static std::vector<std::string> logBuffer;
+        static std::vector<BufferedLog> logBuffer;
         static std::string dateTimeFormat;
 	static Logger::LogLevel logLevel;
         static bool overrideFiltering;

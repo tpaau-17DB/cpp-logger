@@ -20,7 +20,7 @@ const string Logger::RESET = "\033[0m";
 
 
 // Init
-vector<string> Logger::logBuffer = vector<string>();
+vector<Logger::BufferedLog> Logger::logBuffer = vector<Logger::BufferedLog>();
 
 string Logger::dateTimeFormat = "%H:%M:%S";
 
@@ -65,7 +65,7 @@ void Logger::SetNoColor(const bool nocolor)
     Logger::nocolor = nocolor;
 }
 
-void Logger::SetShowDateTime(const bool enabled)
+void Logger::SetShowDatetime(const bool enabled)
 {
     dateTimeEnabled = enabled;
 }
@@ -135,15 +135,13 @@ void Logger::PrintErr(const string& message, const bool overrideFiltering)
 // Other public methods
 void Logger::ClearLogBufer()
 {
-    logBuffer = vector<string>();
-    if (!nocolor)
-    {
-        logBuffer.push_back(BLUE + "[CLEARED]" + RESET + "\n");
-    }
-    else
-    {
-        logBuffer.push_back("[CLEARED]\n");
-    }
+    logBuffer = vector<Logger::BufferedLog>();
+
+    Logger::BufferedLog bufferedLog;
+
+    bufferedLog.Message = "CLEARED BUFFER";
+    bufferedLog.LogLevel = 0;
+    bufferedLog.OverrideFiltering = true;
 }
 
 void Logger::ReleaseLogBuffer()
@@ -151,31 +149,35 @@ void Logger::ReleaseLogBuffer()
     if (logBuffer.size() == 0)
         return;
 
-    if (ncursesMode)
+    ostringstream stream;
+
+    if (ncursesMode) endwin();
+
+    if (dateTimeEnabled)
     {
-        endwin();
-        ostringstream stream;
-        for (const string& log : logBuffer)
+        for (const Logger::BufferedLog& log : logBuffer)
         {
-            stream<<log;
+            //if (log.LogLevel < logLevel && !overrideFiltering && !Logger::overrideFiltering) continue;
+            if (log.LogLevel >= logLevel || Logger::overrideFiltering || log.OverrideFiltering)
+            {
+                stream<<getHeader(log.LogLevel)<<getDateTimeHeader(log.Date)<<log.Message<<"\n";
+            }
         }
-        printf("%s", stream.str().c_str());
-        fflush(stdout);
     }
     else
     {
-        ostringstream stream;
-        for (const string& log : logBuffer)
+        for (const Logger::BufferedLog& log : logBuffer)
         {
-            stream<<log;
+            //if (log.LogLevel < logLevel && !overrideFiltering && !Logger::overrideFiltering) continue;
+            if (log.LogLevel >= logLevel || Logger::overrideFiltering || log.OverrideFiltering)
+            {
+                stream<<getHeader(log.LogLevel)<<log.Message<<"\n";
+            }
         }
-        cout<<stream.str();
     }
-}
 
-void Logger::WriteToBuffer(const string& str)
-{
-    logBuffer.push_back(str);
+    printf("%s", stream.str().c_str());
+    fflush(stdout);
 }
 
 
@@ -227,40 +229,55 @@ string Logger::getHeader(const int id)
         };
     }
 
-    if (dateTimeEnabled)
-        header += getDateTime();
-
     return header;
 }
 
 void Logger::print(const string &message, const int prior, const bool overrideFiltering)
 {   
-    if (logLevel > prior && !overrideFiltering && !Logger::overrideFiltering) return;
-    
-    string header = getHeader(prior);
-
     if (useLogAccumulation)
     {
-        logBuffer.push_back(header + message + "\n");
+        Logger::BufferedLog bufferedLog;
+        bufferedLog.Message = message;
+        bufferedLog.LogLevel = prior;
+        bufferedLog.Date = time(0);
+
+        logBuffer.push_back(bufferedLog);
     }
     else
     {
+        if (prior < logLevel && !overrideFiltering && !Logger::overrideFiltering) return;
+        string header = getHeader(prior);
         if (ncursesMode)
         {
             endwin();
-            printf("%s\n", (header + message).c_str());
+
+            if (dateTimeEnabled)
+            {
+                string dateHeader = getDateTimeHeader(time(0));
+                printf("%s\n", (header + message).c_str());
+            }
+            else
+            {
+            }
             fflush(stdout);
         }
         else
         {
-            cout<<header<<message<<endl;
+            if (dateTimeEnabled)
+            {
+                string dateHeader = getDateTimeHeader(time(0));
+                cout<<header<<dateHeader<<message<<endl;
+            }
+            else
+            {
+                cout<<header<<message<<endl;
+            }
         }
     }
 }
 
-string Logger::getDateTime()
+string Logger::getDateTimeHeader(time_t t)
 {
-    time_t t = time(0);
     tm* now = localtime(&t);
 
     if (!now)

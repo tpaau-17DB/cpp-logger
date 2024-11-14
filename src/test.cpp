@@ -1,6 +1,6 @@
-#include <cmath>
 #include <iostream>
 #include <string>
+#include <iostream>
 
 #include "Logger.h"
 
@@ -8,26 +8,20 @@ using namespace std;
 
 bool logAccumulating = true;
 
-void addLog(const string& log)
-{
-    if (logAccumulating)
-        Logger::WriteToBuffer(log);
-    else
-        cout<<log;
-}
-
 int main()
 {
+    Logger::SetShowDatetime(true);
+
     Logger::ClearLogBufer();
     Logger::SetUseLogAccumulation(logAccumulating);
 
     cout<<"----------test start----------"<<endl<<endl;
 
-    addLog("testing log filtering\n");
+    cout<<"testing log filtering\n";
     
     for (int i = 0; i < 4; i++)
     {
-        addLog("\nVerbosity set to " + to_string(i) + "\n");
+        cout<<"\nVerbosity set to " + to_string(i) + "\n";
         Logger::SetVerbosity(Logger::LogLevel(i));
         Logger::PrintDebug("debug");
         Logger::PrintLog("info");
@@ -35,12 +29,12 @@ int main()
         Logger::PrintErr("error");
     }
 
-    addLog("\ntesting again for overrideFiltering set to true\n");
+    cout<<"\ntesting again for overrideFiltering set to true\n";
     Logger::SetOverrideFiltering(true);
 
     for (int i = 0; i < 4; i++)
     {
-        addLog("\nVerbosity set to " + to_string(i) + "\n");
+        cout<<"\nVerbosity set to " + to_string(i) + "\n";
         Logger::SetVerbosity(Logger::LogLevel(i));
         Logger::PrintDebug("debug");
         Logger::PrintLog("info");
@@ -48,13 +42,13 @@ int main()
         Logger::PrintErr("error");
     }
 
-    addLog("\nNow for nocolor enabled: \n");
+    cout<<"\nNow for nocolor enabled: \n";
 
     Logger::SetOverrideFiltering(false);
     Logger::SetNoColor(true);
     for (int i = 0; i < 4; i++)
     {
-        addLog("\nVerbosity set to " + to_string(i) + "\n");
+        cout<<"\nVerbosity set to " + to_string(i) + "\n";
         Logger::SetVerbosity(Logger::LogLevel(i));
         Logger::PrintDebug("debug");
         Logger::PrintLog("info");
@@ -62,12 +56,12 @@ int main()
         Logger::PrintErr("error");
     }
 
-    addLog("\nTesting printing with datetime\n");
+    cout<<"\nTesting printing with datetime\n";
     Logger::SetNoColor(false);
-    Logger::SetShowDateTime(true);
+    Logger::SetShowDatetime(true);
     for (int i = 0; i < 4; i++)
     {
-        addLog("\nVerbosity set to " + to_string(i) + "\n");
+        cout<<"\nVerbosity set to " + to_string(i) + "\n";
         Logger::SetVerbosity(Logger::LogLevel(i));
         Logger::PrintDebug("debug");
         Logger::PrintLog("info");
