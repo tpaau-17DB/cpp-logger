@@ -16,17 +16,13 @@ int main()
     Logger::SetUseLogAccumulation(logAccumulating);
 
     cout<<"testing log accumulation\n";
-    
-    for (int i = 0; i < 4; i++)
-    {
-        cout<<"\nVerbosity set to " + to_string(i) + "\n";
-        Logger::SetVerbosity(Logger::LogLevel(i));
-        Logger::PrintDebug("debug");
-        Logger::PrintLog("info");
-        Logger::PrintWarn("warning");
-        Logger::PrintErr("error");
-    }
 
+    Logger::PrintDebug("debug");
+    Logger::PrintLog("info");
+    Logger::PrintWarn("warning");
+    Logger::PrintErr("error");
+
+    Logger::SetVerbosity(0);
     Logger::SetNoColor(false);
 
     Logger::ReleaseLogBuffer();
