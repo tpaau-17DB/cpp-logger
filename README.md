@@ -78,8 +78,6 @@ To toggle log buffering use `Logger::SetUseLogAccumulating(bool)`.
 
 Log buffer can be cleared completely using `Logger::ClearLogBuffer()`.
 
-You can also write directly to the buffer using `Logger::WriteToBuffer(string&)`.
-
 When log accumulating is enabled logs need to be "released" manually by calling `Logger::ReleaseLogBuffer()` to make them appear in the terminal.
 
 Log formatting and filtering will be applied at buffer realease, not when a logging function is invoked!
