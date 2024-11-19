@@ -160,12 +160,19 @@ void Logger::ReleaseLogBuffer()
 
     if (ncursesMode) endwin();
 
-    if (dateTimeEnabled)
+    else if (dateTimeEnabled)
     {
         for (const Logger::BufferedLog& log : logBuffer)
         {
             if (logLevel > log.LogLevel && !Logger::overrideFiltering && !log.OverrideFiltering) continue;
-            stream<<getHeader(log.LogLevel)<<getDatetimeHeader(log.Date)<<log.Message<<"\n";
+            if (log.IsRaw)
+            {
+                stream<<log.Message<<"\n";
+            }
+            else
+            {
+                stream<<getHeader(log.LogLevel)<<getDatetimeHeader(log.Date)<<log.Message<<"\n";
+            }
         }
     }
     else
@@ -173,12 +180,32 @@ void Logger::ReleaseLogBuffer()
         for (const Logger::BufferedLog& log : logBuffer)
         {
             if (logLevel > log.LogLevel && !Logger::overrideFiltering && !log.OverrideFiltering) continue;
-            stream<<getHeader(log.LogLevel)<<log.Message<<"\n";
+            if (log.IsRaw)
+            {
+                stream<<log.Message<<"\n";
+            }
+            else
+            {
+                stream<<getHeader(log.LogLevel)<<log.Message<<"\n";
+            }
         }
     }
 
     printf("%s", stream.str().c_str());
     fflush(stdout);
+}
+
+void Logger::WriteToBuffer(const string& str)
+{
+    BufferedLog log;
+    log.Message = str;
+    log.IsRaw = true;
+    logBuffer.push_back(log);
+}
+
+void Logger::WriteLogToBuffer(const BufferedLog& log)
+{
+    logBuffer.push_back(log);
 }
 
 

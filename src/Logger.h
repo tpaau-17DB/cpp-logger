@@ -17,6 +17,15 @@ class Logger
             ErrorsOnly = 3
         };
 
+        struct BufferedLog
+        {
+            std::string Message;
+            time_t Date;
+            short LogLevel;
+            bool OverrideFiltering;
+            bool IsRaw;
+        };
+
 
         // GETTERS
 	static Logger::LogLevel GetVerbosity();
@@ -48,19 +57,11 @@ class Logger
         // OTHER PUBLIC FUNCTIONS
         static void ClearLogBufer();
         static void ReleaseLogBuffer();
+        static void WriteToBuffer(const std::string& str);
+        static void WriteLogToBuffer(const BufferedLog& log);
 
 
     private:
-        // PRIVATE STRUCTS
-        struct BufferedLog
-        {
-            std::string Message;
-            time_t Date;
-            short LogLevel;
-            bool OverrideFiltering;
-        };
-
-
         // INTERNAL FUNCTIONS
         static void print(const std::string &message, const int prior, const bool overrideFiltering);
         static std::string getHeader(const int id);
