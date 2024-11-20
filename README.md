@@ -71,16 +71,14 @@ Colors may not be supported by your terminal emulator, conflict with some featur
 
 <summary>Enabling log buffering/accumulating</summary>
 
-Log buffering is a feature that manages logs more efficiently.
-When log buffering is enabled, logger stores messages in RAM instead of printing them directly into the terminal. 
+* Without buffering: Every log message is immediately written to the terminal, which can be a relatively slow operation.
+* With buffering: The log messages are stored in memory (RAM) for a period of time. Instead of writing to the terminal or file immediately, logs are stored in buffer and released when `Logger::ReleaseLogBuffer()` is called. This can lead to a significant performance boost.
 
 To toggle log buffering use `Logger::SetUseLogAccumulating(bool)`.
 
 Log buffer can be cleared completely using `Logger::ClearLogBuffer()`.
 
 When log accumulating is enabled logs need to be "released" manually by calling `Logger::ReleaseLogBuffer()` to make them appear in the terminal.
-
-Log formatting and filtering will be applied at buffer realease, not when a logging function is invoked!
 
 Please make sure to clear the log buffer after releasing it; it doesn't happen automatically!
 
