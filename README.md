@@ -71,6 +71,7 @@ Colors may not be supported by your terminal emulator, conflict with some featur
 
 <summary>Enabling log buffering/accumulating</summary>
 
+# How it works
 * Without buffering: Every log message is immediately written to the terminal, which can be a relatively slow operation.
 * With buffering: The log messages are stored in memory (RAM) for a period of time. Instead of writing to the terminal or file immediately, logs are stored in buffer and released when `Logger::ReleaseLogBuffer()` is called. This can lead to a significant performance boost.
 
