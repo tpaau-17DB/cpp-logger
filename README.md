@@ -8,7 +8,7 @@ First clone the repo with `git clone` and navigate to cloned repo with `cd`.
 
 To use the package in your own project simply copy the source files to your project:
 ```
-cp src/Logger.h src/logger.cpp /path/to/project/source
+cp src/Logger.h src/logger.cpp /path/to/project/source/
 ```
 
 ## Documentation
