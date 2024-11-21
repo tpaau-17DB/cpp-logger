@@ -44,7 +44,7 @@ Possible verbosity values are:
 * [2] Quiet - Only show warnings and errors
 * [3] ErrorsOnly - This is pretty self-explanatory
 
-You can either use `Logger::LogLevel` enum or an `int` value to set verbosity to desired level.
+You can either use `Logger::LogLevel` `enum` or an `int` value to set verbosity to desired level.
 Just make sure that verbosity value is in the range of 0-3 or you will get an error.
 
 ## Overriding log filtering
