@@ -44,7 +44,7 @@ Possible verbosity values are:
 * [2] Quiet - Only show warnings and errors
 * [3] ErrorsOnly - This is pretty self-explanatory
 
-You can either use `Logger::LogLevel` enum or an int value to set verbosity to desired level.
+You can either use `Logger::LogLevel` enum or an `int` value to set verbosity to desired level.
 Just make sure that verbosity value is in the range of 0-3 or you will get an error.
 
 ## Overriding log filtering
@@ -73,7 +73,7 @@ Colors may not be supported by your terminal emulator, conflict with some featur
 
 ## How it works
 * Without buffering: Every log message is immediately written to the terminal, which can be a relatively slow operation.
-* With buffering: The log messages are stored in memory (RAM) for a period of time. Instead of writing to the terminal or file immediately, logs are stored in buffer and released when `Logger::ReleaseLogBuffer()` is called. This can lead to a significant performance boost.
+* With buffering: The log messages are stored in RAM until the buffer is released. This can lead to a significant performance boost.
 
 To toggle log buffering use `Logger::SetUseLogAccumulating(bool)`.
 
@@ -106,7 +106,7 @@ When `ncurses` mode is enabled `endwin()` is called before the log is printed.
 The Display Dates feature adds a timestamp to each log entry.
 You can toggle showing dates with `Logger::SetShowDatetime(bool)` function.
 
-When this is enabled logs will appear like this:
+When this option enabled logs will appear like so:
 ```
 [DEB] [14:21:24] debug
 [LOG] [14:21:24] info
