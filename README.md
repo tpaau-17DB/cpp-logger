@@ -1,9 +1,9 @@
-## cpp-logger
+# cpp-logger
 C++ program to filter and print logs
 
 git repo: https://github.com/tpaau-17DB/cpp-logger
 
-## Installing
+# Installing
 First clone the repo with `git clone` and navigate to cloned repo with `cd`.
 
 To use the package in your own project simply copy the source files to your project:
@@ -11,7 +11,7 @@ To use the package in your own project simply copy the source files to your proj
 cp src/Logger.h src/logger.cpp /path/to/project/source/
 ```
 
-## Documentation
+# Documentation
 
 <details>
 
@@ -32,7 +32,7 @@ Note that debug logs will get filtered out by default.
 
 <summary>Filtering logs</summary>
 
-# By verbosity
+## By verbosity
 
 Verbosity controls which logs are suppressed and which are not.
 Method `Logger::SetVerbosity(...)` is used to set the verbosity value.
@@ -47,7 +47,7 @@ Possible verbosity values are:
 You can either use `Logger::LogLevel` enum or an int value to set verbosity to desired level.
 Just make sure that verbosity value is in the range of 0-3 or you will get an error.
 
-# Overriding log filtering
+## Overriding log filtering
 
 Log filtering can be disabled globally by calling `Logger::SetOverrideFiltering(bool)`.
 
@@ -71,7 +71,7 @@ Colors may not be supported by your terminal emulator, conflict with some featur
 
 <summary>Enabling log buffering/accumulating</summary>
 
-# How it works
+## How it works
 * Without buffering: Every log message is immediately written to the terminal, which can be a relatively slow operation.
 * With buffering: The log messages are stored in memory (RAM) for a period of time. Instead of writing to the terminal or file immediately, logs are stored in buffer and released when `Logger::ReleaseLogBuffer()` is called. This can lead to a significant performance boost.
 
