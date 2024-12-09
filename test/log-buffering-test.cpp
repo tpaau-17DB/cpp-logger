@@ -10,10 +10,7 @@ bool logAccumulating = true;
 
 int main()
 {
-    cout<<"----------test start----------"<<endl<<endl;
-
-    Logger::ClearLogBufer();
-    Logger::SetUseLogAccumulation(logAccumulating);
+    cout<<"----------test start----------\n\n";
 
     cout<<"testing log accumulation\n";
 
@@ -27,6 +24,6 @@ int main()
 
     Logger::ReleaseLogBuffer();
 
-    cout<<endl<<"----------test end----------"<<endl;
+    cout<<"\n----------test end----------\n";
     return 0;
 }

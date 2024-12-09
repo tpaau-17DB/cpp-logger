@@ -6,26 +6,24 @@
 
 using namespace std;
 
+bool logAccumulating = true;
+
 int main()
 {
-    cout<<"----------test start----------"<<endl<<endl;
+    cout<<"----------test start----------\n\n";
 
-    Logger::ToggleLogAccumulation(true);
-    Logger::ToggleFileLogging(true);
-    Logger::SetLogFilePath("~/gitrepos/cpp-logger/test/output.log");
-    
-    for (int i = 0; i < 4; i++)
-    {
-        cout<<"\nVerbosity set to " + to_string(i) + "\n";
-        Logger::SetVerbosity(Logger::LogLevel(i));
-        Logger::PrintDebug("debug");
-        Logger::PrintLog("info");
-        Logger::PrintWarn("warning");
-        Logger::PrintErr("error");
-        Logger::ReleaseLogBuffer();
-        Logger::ClearLogBufer();
-    }
+    cout<<"testing log accumulation\n";
 
-    cout<<endl<<"----------test end----------"<<endl;
+    Logger::PrintDebug("debug");
+    Logger::PrintLog("info");
+    Logger::PrintWarn("warning");
+    Logger::PrintErr("error");
+
+    Logger::SetVerbosity(0);
+    Logger::SetNoColor(false);
+
+    Logger::ReleaseLogBuffer();
+
+    cout<<"\n----------test end----------\n";
     return 0;
 }

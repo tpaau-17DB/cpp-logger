@@ -28,22 +28,19 @@ class Logger
 
         // GETTERS
 	    static Logger::LogLevel GetVerbosity();
-        static bool GetLogBufferingEnabled();
 
 
         // SETTERS
-        static void SetVerbosity(const Logger::LogLevel logLevel);
+        static void SetVerbosity(const LogLevel verbosity);
         static void SetVerbosity(const int verbosity);
 
-        static void SetOverrideFiltering(const bool overrideFiltering);
-        static void SetNCursesMode(const bool mode);
+        static void SetOverrideFiltering(const bool enabled);
+        static void SetNCursesMode(const bool enabled);
 
-        static void SetNoColor(const bool nocolor);
+        static void SetNoColor(const bool enabled);
 
         static void SetShowDatetime(const bool enabled);
         static void SetDatetimeFormat(const std::string format);
-
-        static void ToggleLogAccumulation(const bool enabled);
 
         static void SetLogFilePath(const std::string& path);
         static void ToggleFileLogging(const bool enabled);
@@ -64,7 +61,6 @@ class Logger
 
 
         // OTHER PUBLIC FUNCTIONS
-        static void ClearLogBufer();
         static void ReleaseLogBuffer();
         static void WriteToBuffer(const std::string& str);
         static void WriteLogToBuffer(const BufferedLog& log);
@@ -74,6 +70,8 @@ class Logger
         // INTERNAL FUNCTIONS
         static void print(const std::string &message, const int prior, const bool overrideFiltering);
         static std::string getHeader(const int id);
+
+        static void clearLogBufer();
 
         static std::string getDatetimeHeader(time_t time);
         static bool isValidDatetimeFormat(const std::string& format);
@@ -99,7 +97,7 @@ class Logger
 
         // DYNAMIC PRIVATE VARIABLES
         static std::vector<BufferedLog> logBuffer;
-        static bool useLogAccumulation;
+        static unsigned int maxLogBufferSize;
 
         static std::string dateTimeFormat;
         static bool dateTimeEnabled;

@@ -9,9 +9,8 @@ using namespace std;
 int main()
 {
     Logger::SetShowDatetime(false);
-    Logger::SetUseLogAccumulation(true);
 
-    cout<<"----------test start----------"<<endl<<endl;
+    cout<<"----------test start----------\n\n";
 
     cout<<"testing log filtering\n";
     
@@ -24,7 +23,6 @@ int main()
         Logger::PrintWarn("warning");
         Logger::PrintErr("error");
         Logger::ReleaseLogBuffer();
-        Logger::ClearLogBufer();
     }
 
     cout<<"\ntesting again for overrideFiltering set to true\n";
@@ -39,7 +37,6 @@ int main()
         Logger::PrintWarn("warning");
         Logger::PrintErr("error");
         Logger::ReleaseLogBuffer();
-        Logger::ClearLogBufer();
     }
 
     cout<<"\nNow for nocolor enabled: \n";
@@ -55,7 +52,6 @@ int main()
         Logger::PrintWarn("warning");
         Logger::PrintErr("error");
         Logger::ReleaseLogBuffer();
-        Logger::ClearLogBufer();
     }
 
     cout<<"\nTesting printing with datetime\n";
@@ -70,9 +66,8 @@ int main()
         Logger::PrintWarn("warning");
         Logger::PrintErr("error");
         Logger::ReleaseLogBuffer();
-        Logger::ClearLogBufer();
     }
 
-    cout<<endl<<"----------test end----------"<<endl;
+    cout<<"\n---------test end----------\n";
     return 0;
 }
