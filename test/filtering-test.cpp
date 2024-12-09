@@ -6,14 +6,10 @@
 
 using namespace std;
 
-bool logAccumulating = true;
-
 int main()
 {
-    Logger::SetShowDatetime(true);
-
-    Logger::ClearLogBufer();
-    Logger::SetUseLogAccumulation(logAccumulating);
+    Logger::SetShowDatetime(false);
+    Logger::SetUseLogAccumulation(true);
 
     cout<<"----------test start----------"<<endl<<endl;
 
@@ -27,6 +23,8 @@ int main()
         Logger::PrintLog("info");
         Logger::PrintWarn("warning");
         Logger::PrintErr("error");
+        Logger::ReleaseLogBuffer();
+        Logger::ClearLogBufer();
     }
 
     cout<<"\ntesting again for overrideFiltering set to true\n";
@@ -40,6 +38,8 @@ int main()
         Logger::PrintLog("info");
         Logger::PrintWarn("warning");
         Logger::PrintErr("error");
+        Logger::ReleaseLogBuffer();
+        Logger::ClearLogBufer();
     }
 
     cout<<"\nNow for nocolor enabled: \n";
@@ -54,6 +54,8 @@ int main()
         Logger::PrintLog("info");
         Logger::PrintWarn("warning");
         Logger::PrintErr("error");
+        Logger::ReleaseLogBuffer();
+        Logger::ClearLogBufer();
     }
 
     cout<<"\nTesting printing with datetime\n";
@@ -67,9 +69,9 @@ int main()
         Logger::PrintLog("info");
         Logger::PrintWarn("warning");
         Logger::PrintErr("error");
+        Logger::ReleaseLogBuffer();
+        Logger::ClearLogBufer();
     }
-
-    Logger::ReleaseLogBuffer();
 
     cout<<endl<<"----------test end----------"<<endl;
     return 0;
