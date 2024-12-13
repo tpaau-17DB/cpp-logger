@@ -39,6 +39,8 @@ class Logger
 
         static void SetNoColor(const bool enabled);
 
+        static void SetMaxLogBufferSize(const int limit);
+
         static void SetShowDatetime(const bool enabled);
         static void SetDatetimeFormat(const std::string format);
 

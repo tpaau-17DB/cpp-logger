@@ -248,6 +248,14 @@ void Logger::SetNoColor(const bool enabled)
     nocolor = enabled;
 }
 
+void Logger::SetMaxLogBufferSize(const int maxSize)
+{
+    if (maxSize < 20)
+        PrintWarn("Log buffer limit is being set to a low value!");
+
+    maxLogBufferSize = maxSize;
+}
+
 void Logger::SetShowDatetime(const bool enabled)
 {
     dateTimeEnabled = enabled;

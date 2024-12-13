@@ -69,19 +69,20 @@ Colors may not be supported by your terminal emulator, conflict with some featur
 
 <details>
 
-<summary>Enabling log buffering/accumulating</summary>
+<summary>Using log buffering/accumulating</summary>
 
-## How it works
-* Without buffering: Every log message is immediately written to the terminal, which can be a relatively slow operation.
-* With buffering: The log messages are stored in RAM until the buffer is released. This can lead to a significant performance boost.
+## Log buffering
+Log buffering temporarily stores logs in RAM instead of printing them directly to the terminal.
+This approach improves performance by reducing I/O operations.
 
-To toggle log buffering use `Logger::SetUseLogAccumulating(bool)`.
+The log buffer is automatically released when it reaches a limit of 100 logs.
+You can also manually release the buffer at any time by calling `Logger::ReleaseLogBuffer()`.
 
-Log buffer can be cleared completely using `Logger::ClearLogBuffer()`.
+To ensure all logs are printed when the program exits, it’s important to release the buffer explicitly.
 
-When log accumulating is enabled logs need to be "released" manually by calling `Logger::ReleaseLogBuffer()` to make them appear in the terminal.
+Buffering also ensures that log settings (such as log level or format) are consistently applied when the buffer is released, making the log output more consistent.
 
-Please make sure to clear the log buffer after releasing it; it doesn't happen automatically!
+You can customize the max buffer size using `Logger::SetMaxLogBufferSize(int).`
 
 </details>
 
@@ -114,6 +115,6 @@ When this option enabled logs will appear like so:
 [ERR] [14:21:24] error
 ```
 
-You can customize datetime fromat with `Logger::SetDatetimeFromat(string)`.
+You can customize datetime format with `Logger::SetDatetimeFromat(string)`.
 
 </details>
