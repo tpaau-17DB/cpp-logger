@@ -1,6 +1,7 @@
 #ifndef LOGGER_H
 #define LOGGER_H
 
+#include <sstream>
 #include <string>
 #include <vector>
 #include <ctime>
@@ -43,6 +44,9 @@ void SetLogDatetimeFormat(const std::string format);
 void SetLogFilePath(const std::string& path);
 void ToggleFileLogging(const bool enabled);
 
+void SetLogOutputStream(std::ostringstream* stream);
+void ToggleUseCustomOutputStream(const bool enabled);
+
 
 // PRINTING FUNCTIONS
 void PrintDebug(const std::string& message);
@@ -62,5 +66,6 @@ void PrintCrit(const std::string& message, const bool overrideFiltering);
 
 // Other public methods
 void FlushLogBuffer();
+void FlushLogStream();
 
 #endif
