@@ -3,6 +3,7 @@
 
 # Folders
 /bin/
+/test/bin/
 
 # Compiled Object files
 *.slo
