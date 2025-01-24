@@ -8,64 +8,76 @@ using namespace std;
 
 int main()
 {
-    Logger::SetShowDatetime(false);
-
     cout<<"----------test start----------\n\n";
 
-    cout<<"testing log filtering\n";
+    cout<<"Testing log filtering\n";
     
     for (int i = 0; i < 4; i++)
     {
         cout<<"\nVerbosity set to " + to_string(i) + "\n";
-        Logger::SetVerbosity(Logger::LogLevel(i));
-        Logger::PrintDebug("debug");
-        Logger::PrintLog("info");
-        Logger::PrintWarn("warning");
-        Logger::PrintErr("error");
-        Logger::ReleaseLogBuffer();
+        SetLoggerVerbosity(LogLevel(i));
+        PrintDebug("debug");
+        PrintLog("info");
+        PrintWarn("warning");
+        PrintErr("error");
+        PrintCrit("critical");
     }
 
-    cout<<"\ntesting again for overrideFiltering set to true\n";
-    Logger::SetOverrideFiltering(true);
+    cout<<"\nTesting for global filtering override\n";
+
+    ToggleLogFilteringOverride(true);
+    for (int i = 0; i < 4; i++)
+    {
+        cout<<"\nVerbosity set to " + to_string(i) + "\n";
+        SetLoggerVerbosity(LogLevel(i));
+        PrintDebug("debug");
+        PrintLog("info");
+        PrintWarn("warning");
+        PrintErr("error");
+        PrintCrit("critical");
+    }
+    ToggleLogFilteringOverride(false);
+
+    cout<<"\nTesting for local filtering override\n";
 
     for (int i = 0; i < 4; i++)
     {
         cout<<"\nVerbosity set to " + to_string(i) + "\n";
-        Logger::SetVerbosity(Logger::LogLevel(i));
-        Logger::PrintDebug("debug");
-        Logger::PrintLog("info");
-        Logger::PrintWarn("warning");
-        Logger::PrintErr("error");
-        Logger::ReleaseLogBuffer();
+        SetLoggerVerbosity(LogLevel(i));
+        PrintDebug("debug", true);
+        PrintLog("info", true);
+        PrintWarn("warning", true);
+        PrintErr("error", true);
+        PrintCrit("critical", true);
     }
 
-    cout<<"\nNow for nocolor enabled: \n";
+    cout<<"\nTesting for nocolor enabled: \n";
 
-    Logger::SetOverrideFiltering(false);
-    Logger::SetNoColor(true);
+    ToggleLogColor(true);
     for (int i = 0; i < 4; i++)
     {
         cout<<"\nVerbosity set to " + to_string(i) + "\n";
-        Logger::SetVerbosity(Logger::LogLevel(i));
-        Logger::PrintDebug("debug");
-        Logger::PrintLog("info");
-        Logger::PrintWarn("warning");
-        Logger::PrintErr("error");
-        Logger::ReleaseLogBuffer();
+        SetLoggerVerbosity(LogLevel(i));
+        PrintDebug("debug");
+        PrintLog("info");
+        PrintWarn("warning");
+        PrintErr("error");
+        PrintCrit("critical");
     }
+    ToggleLogColor(false);
 
     cout<<"\nTesting printing with datetime\n";
-    Logger::SetNoColor(false);
-    Logger::SetShowDatetime(true);
+
+    ToggleLogDatetime(true);
     for (int i = 0; i < 4; i++)
     {
         cout<<"\nVerbosity set to " + to_string(i) + "\n";
-        Logger::SetVerbosity(Logger::LogLevel(i));
-        Logger::PrintDebug("debug");
-        Logger::PrintLog("info");
-        Logger::PrintWarn("warning");
-        Logger::PrintErr("error");
-        Logger::ReleaseLogBuffer();
+        SetLoggerVerbosity(LogLevel(i));
+        PrintDebug("debug");
+        PrintLog("info");
+        PrintWarn("warning");
+        PrintErr("error");
+        PrintCrit("critical");
     }
 
     cout<<"\n---------test end----------\n";
