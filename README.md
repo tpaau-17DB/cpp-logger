@@ -6,7 +6,7 @@ A `C++` logger library
 First clone the repo with `git clone` and navigate to cloned repo with `cd`.
 
 
-To use the library in your own project simply copy the source files to your project:
+To use the library in your project, copy sources to your project directory:
 ```
 cp src/Logger.h src/logger.cpp /target/
 ```
@@ -42,23 +42,23 @@ Note that debug logs will get filtered out by default.
 
 ## By verbosity
 
-Verbosity controls which logs are suppressed and which are not.
+Verbosity controls which logs are getting suppressed and which are not.
 Method `SetLoggerVerbosity(...)` is used to set the verbosity value.
 
 Possible verbosity values are:
 
-* [0] All - Don't suppress any logs
-* [1] Standard - Only suppress debug logs (default value)
-* [2] Quiet - Only show warnings and errors
-* [3] ErrorsOnly - This is pretty self-explanatory
+* `[0] All` - Don't suppress any logs
+* `[1] Standard` - Only suppress debug logs (default value)
+* `[2] Quiet` - Only show warnings and errors
+* `[3] ErrorsOnly` - This is pretty self-explanatory
 
 You can either use `LogLevel` `enum` or an `int` value to set verbosity to
-desired level. Just make sure that verbosity value is in the range of 0-3 or
-you will get an error.
+desired level. If you are using `int`, make sure that verbosity value is in the
+range of 0-3 or you will get an error.
 
 ## Overriding log filtering
 
-To override log filtering, call `ToggleLogFilteringOverride(bool)`.
+To toggle log filtering override, call `ToggleLogFilteringOverride(bool)`.
 
 You can disable filtering per-log by passing `overridePriority` set to `true`
 to any of the logging functions.
@@ -85,7 +85,7 @@ features or just simply not fit your taste.
 The Display Dates feature adds a timestamp to each log entry.
 You can toggle showing dates with `ToggleLogDatetime(bool)` function.
 
-When this option enabled logs will appear like so:
+While datetime is enabled, logs will appear like so:
 ```
 [DEB] [14:21:24] debug
 [LOG] [14:21:24] info
@@ -93,6 +93,6 @@ When this option enabled logs will appear like so:
 [ERR] [14:21:24] error
 ```
 
-You can customize datetime format with `SetLogDatetimeFromat(string)`.
+You can customize datetime format with `SetLogDatetimeFormat(string)`.
 
 </details>
