@@ -21,7 +21,7 @@ const string RESET = "\033[0m";
 
 
 // Variables
-vector<Logger::BufferedLog> logBuffer = vector<Logger::BufferedLog>();
+vector<BufferedLog> logBuffer = vector<BufferedLog>();
 unsigned int maxLogBufferSize = 100;
 
 string dateTimeFormat = "%H:%M:%S";
@@ -30,7 +30,7 @@ bool dateTimeEnabled = false;
 string logFilePath = "";
 bool fileLoggingEnabled;
 
-Logger::LogLevel logLevel = Logger::Standard;
+LogLevel logLevel = Standard;
 bool overrideFiltering = false;
 
 bool ncursesMode = false;
@@ -65,7 +65,7 @@ string logLevelToColor(const unsigned short logLevel)
             return MAGENTA;
 
         default:
-            Logger::PrintErr("Unknown logLevel value!");
+            PrintErr("Unknown logLevel value!");
             return "";
     }
 }
@@ -107,7 +107,7 @@ string getHeader(const int id)
 
 void print(const string &message, const int prior, const bool overrideFiltering)
 {
-    Logger::BufferedLog bufferedLog;
+    BufferedLog bufferedLog;
     bufferedLog.Message = message;
     bufferedLog.LogLevel = prior;
     bufferedLog.Date = time(0);
@@ -115,15 +115,15 @@ void print(const string &message, const int prior, const bool overrideFiltering)
 
     if (traceMode || logBuffer.size() >= maxLogBufferSize)
     {
-        Logger::ReleaseLogBuffer();
+        ReleaseLogBuffer();
     }
 }
 
 void clearLogBufer()
 {
-    logBuffer = vector<Logger::BufferedLog>();
+    logBuffer = vector<BufferedLog>();
 
-    Logger::BufferedLog bufferedLog;
+    BufferedLog bufferedLog;
 
     if (!traceMode)
     {
@@ -212,8 +212,8 @@ int writeToFile(const string& filePath, const string& contents, const bool overw
 
     if(!outputFile)
     {
-        Logger::PrintErr("Unable to open file '" + filePath + "' for writing!");
-        Logger::SetFileLogging(false);
+        PrintErr("Unable to open file '" + filePath + "' for writing!");
+        SetFileLogging(false);
         return 1;
     }
 
@@ -236,12 +236,12 @@ int appendToFile(const string& filePath, const string& contents)
 
 
 // Setters
-void Logger::SetVerbosity(const LogLevel verbosity) 
+void SetVerbosity(const LogLevel verbosity) 
 {
     logLevel = verbosity;
 }
 
-void Logger::SetVerbosity(const int verbosity)
+void SetVerbosity(const int verbosity)
 {
     if (!(verbosity >= 0 && verbosity <= 3))
     {
@@ -251,22 +251,22 @@ void Logger::SetVerbosity(const int verbosity)
     logLevel = LogLevel(verbosity);
 }
 
-void Logger::SetOverrideFiltering(const bool enabled)
+void SetOverrideFiltering(const bool enabled)
 {
     overrideFiltering = enabled;
 }
 
-void Logger::SetNCursesMode(const bool enabled)
+void SetNCursesMode(const bool enabled)
 {
     ncursesMode = enabled;
 }
 
-void Logger::SetNoColor(const bool enabled)
+void SetNoColor(const bool enabled)
 {
     nocolor = enabled;
 }
 
-void Logger::SetMaxLogBufferSize(const int maxSize)
+void SetMaxLogBufferSize(const int maxSize)
 {
     if (maxSize < 20)
         PrintWarn("Log buffer limit is being set to a low value!");
@@ -274,12 +274,12 @@ void Logger::SetMaxLogBufferSize(const int maxSize)
     maxLogBufferSize = maxSize;
 }
 
-void Logger::SetShowDatetime(const bool enabled)
+void SetShowDatetime(const bool enabled)
 {
     dateTimeEnabled = enabled;
 }
 
-void Logger::SetDatetimeFormat(const string format)
+void SetDatetimeFormat(const string format)
 {
     if (isValidDatetimeFormat(format))
         dateTimeFormat = format;
@@ -287,7 +287,7 @@ void Logger::SetDatetimeFormat(const string format)
         PrintErr("Invalid datetime format specified: '" + format + "'.");
 }
 
-void Logger::SetLogFilePath(const string& path)
+void SetLogFilePath(const string& path)
 {
     if (overwriteFile(path, "[OUTPUT START]\n") == 0)
     {
@@ -299,78 +299,78 @@ void Logger::SetLogFilePath(const string& path)
     }
 }
 
-void Logger::SetFileLogging(const bool enabled)
+void SetFileLogging(const bool enabled)
 {
     fileLoggingEnabled = enabled;
 }
 
-void Logger::SetTraceMode(const bool enabled)
+void SetTraceMode(const bool enabled)
 {
     traceMode = enabled;
 }
 
 
 // Getters
-Logger::LogLevel Logger::GetVerbosity()
+LogLevel GetVerbosity()
 {
     return logLevel;
 }
 
 
 // Log methods
-void Logger::PrintDebug(const string& message)
+void PrintDebug(const string& message)
 {
     print(message, 0, false);
 }
 
-void Logger::PrintDebug(const string& message, const bool overrideFiltering)
+void PrintDebug(const string& message, const bool overrideFiltering)
 {
     print(message, 0, overrideFiltering);
 }
 
-void Logger::PrintLog(const string& message)
+void PrintLog(const string& message)
 {
     print(message, 1, false);
 }
 
-void Logger::PrintLog(const string& message, const bool overrideFiltering)
+void PrintLog(const string& message, const bool overrideFiltering)
 {
     print(message, 1, overrideFiltering);
 }
 
-void Logger::PrintWarn(const string& message)
+void PrintWarn(const string& message)
 {
     print(message, 2, false);
 }
 
-void Logger::PrintWarn(const string& message, const bool overrideFiltering)
+void PrintWarn(const string& message, const bool overrideFiltering)
 {
     print(message, 2, overrideFiltering);
 }
 
-void Logger::PrintErr(const string& message)
+void PrintErr(const string& message)
 {
     print(message, 3, false);
 }
 
-void Logger::PrintErr(const string& message, const bool overrideFiltering)
+void PrintErr(const string& message, const bool overrideFiltering)
 {
     print(message, 3, overrideFiltering);
 }
 
-void Logger::PrintCrit(const string& message)
+void PrintCrit(const string& message)
 {
     print(message, 4, false);
 }
 
-void Logger::PrintCrit(const string& message, const bool overrideFiltering)
+void PrintCrit(const string& message, const bool overrideFiltering)
 {
     print(message, 4, overrideFiltering);
 }
 
 
 // Other public methods
-void Logger::ReleaseLogBuffer()
+void ReleaseLogBuffer()
 {
     if (logBuffer.size() == 0)
         return;
@@ -403,7 +403,7 @@ void Logger::ReleaseLogBuffer()
     clearLogBufer();
 }
 
-void Logger::WriteLogToBuffer(const BufferedLog& log)
+void WriteLogToBuffer(const BufferedLog& log)
 {
     logBuffer.push_back(log);
 }

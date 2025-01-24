@@ -7,24 +7,23 @@ using namespace std;
 
 int main()
 {
-    Logger::SetShowDatetime(false);
-
     cout<<"----------test start----------\n\n";
 
     cout<<"Testing trace mode\n\n";
 
-    Logger::SetTraceMode(true);
+    SetTraceMode(true);
+    SetVerbosity(Verbose);
 
     cout<<"debug log:\n";
-    Logger::PrintDebug("debug");
+    PrintDebug("debug");
     cout<<"standard log:\n";
-    Logger::PrintLog("log");
+    PrintLog("log");
     cout<<"warning:\n";
-    Logger::PrintWarn("warning");
+    PrintWarn("warning");
     cout<<"standard error:\n";
-    Logger::PrintErr("error");
+    PrintErr("error");
     cout<<"critical error:\n";
-    Logger::PrintCrit("critical");
+    PrintCrit("critical");
 
     cout<<"\n---------test end----------\n";
     return 0;
