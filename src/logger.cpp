@@ -1,6 +1,5 @@
 #include <iostream>
 #include <ncurses.h>
-#include <cstdio>
 #include <ctime>
 #include <string>
 #include <vector>
@@ -17,10 +16,11 @@ const string BLUE = "\033[34m";
 const string GREEN = "\033[32m";
 const string YELLOW = "\033[33m";
 const string RED = "\033[31m";
+const string MAGENTA = "\033[35m";
 const string RESET = "\033[0m"; 
 
 
-// Init
+// Variables
 vector<Logger::BufferedLog> logBuffer = vector<Logger::BufferedLog>();
 unsigned int maxLogBufferSize = 100;
 
@@ -36,6 +36,8 @@ bool overrideFiltering = false;
 bool ncursesMode = false;
 
 bool nocolor = false;
+
+bool traceMode = false;
 
 // Internal methods
 string colorify(const string& color, const string& toColorify)
@@ -59,6 +61,9 @@ string logLevelToColor(const unsigned short logLevel)
         case 3:
             return RED;
 
+        case 4:
+            return MAGENTA;
+
         default:
             Logger::PrintErr("Unknown logLevel value!");
             return "";
@@ -80,11 +85,15 @@ string getHeader(const int id)
             break;
 
         case 2:
-            header = "[WAR] ";
+            header = "[WARN] ";
             break;
 
         case 3:
             header = "[ERR] ";
+            break;
+
+        case 4:
+            header = "[CRIT] ";
             break;
     };
 
@@ -104,7 +113,7 @@ void print(const string &message, const int prior, const bool overrideFiltering)
     bufferedLog.Date = time(0);
     logBuffer.push_back(bufferedLog);
 
-    if (logBuffer.size() >= maxLogBufferSize)
+    if (traceMode || logBuffer.size() >= maxLogBufferSize)
     {
         Logger::ReleaseLogBuffer();
     }
@@ -116,12 +125,18 @@ void clearLogBufer()
 
     Logger::BufferedLog bufferedLog;
 
-    bufferedLog.Message = "[BUFFER CLEARED]";
-    bufferedLog.LogLevel = 0;
-    bufferedLog.OverrideFiltering = true;
-    bufferedLog.Date = time(0);
+    if (!traceMode)
+    {
+        bufferedLog.Message = "[BUFFER CLEARED]";
+        if (nocolor)
+            bufferedLog.Message = colorify(MAGENTA,
+                bufferedLog.Message);
+        bufferedLog.IsRaw = true;
+        bufferedLog.LogLevel = 0;
+        bufferedLog.Date = time(0);
 
-    logBuffer.push_back(bufferedLog);
+        logBuffer.push_back(bufferedLog);
+    }
 }
 
 string getDatetimeHeader(time_t t)
@@ -138,7 +153,8 @@ string getDatetimeHeader(time_t t)
 
     char buffer[80];
 
-    if (strftime(buffer, sizeof(buffer), dateTimeFormat.c_str(), now) == 0) 
+    if (strftime(buffer, sizeof(buffer),
+                dateTimeFormat.c_str(), now) == 0) 
     {
         if (!nocolor)
             return RED + "[FORMAT ERROR] " + RESET;
@@ -160,7 +176,8 @@ bool isValidDatetimeFormat(const std::string& format)
     }
 
     char buffer[80];
-    if (strftime(buffer, sizeof(buffer), format.c_str(), now) == 0) 
+    if (strftime(buffer, sizeof(buffer),
+                format.c_str(), now) == 0) 
     {
         return false;
     }
@@ -196,7 +213,7 @@ int writeToFile(const string& filePath, const string& contents, const bool overw
     if(!outputFile)
     {
         Logger::PrintErr("Unable to open file '" + filePath + "' for writing!");
-        Logger::ToggleFileLogging(false);
+        Logger::SetFileLogging(false);
         return 1;
     }
 
@@ -216,6 +233,7 @@ int appendToFile(const string& filePath, const string& contents)
 {
     return writeToFile(filePath, contents, false);
 }
+
 
 // Setters
 void Logger::SetVerbosity(const LogLevel verbosity) 
@@ -281,9 +299,14 @@ void Logger::SetLogFilePath(const string& path)
     }
 }
 
-void Logger::ToggleFileLogging(const bool enabled)
+void Logger::SetFileLogging(const bool enabled)
 {
     fileLoggingEnabled = enabled;
+}
+
+void Logger::SetTraceMode(const bool enabled)
+{
+    traceMode = enabled;
 }
 
 
@@ -292,6 +315,7 @@ Logger::LogLevel Logger::GetVerbosity()
 {
     return logLevel;
 }
+
 
 // Log methods
 void Logger::PrintDebug(const string& message)
@@ -334,9 +358,18 @@ void Logger::PrintErr(const string& message, const bool overrideFiltering)
     print(message, 3, overrideFiltering);
 }
 
+void Logger::PrintCrit(const string& message)
+{
+    print(message, 4, false);
+}
+
+void Logger::PrintCrit(const string& message, const bool overrideFiltering)
+{
+    print(message, 4, overrideFiltering);
+}
+
+
 // Other public methods
-
-
 void Logger::ReleaseLogBuffer()
 {
     if (logBuffer.size() == 0)
@@ -368,14 +401,6 @@ void Logger::ReleaseLogBuffer()
     }
 
     clearLogBufer();
-}
-
-void Logger::WriteToBuffer(const string& str)
-{
-    BufferedLog log;
-    log.Message = str;
-    log.IsRaw = true;
-    logBuffer.push_back(log);
 }
 
 void Logger::WriteLogToBuffer(const BufferedLog& log)

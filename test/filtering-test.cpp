@@ -22,6 +22,7 @@ int main()
         Logger::PrintLog("info");
         Logger::PrintWarn("warning");
         Logger::PrintErr("error");
+        Logger::PrintCrit("critical");
         Logger::ReleaseLogBuffer();
     }
 
@@ -36,6 +37,7 @@ int main()
         Logger::PrintLog("info");
         Logger::PrintWarn("warning");
         Logger::PrintErr("error");
+        Logger::PrintCrit("critical");
         Logger::ReleaseLogBuffer();
     }
 
@@ -51,6 +53,7 @@ int main()
         Logger::PrintLog("info");
         Logger::PrintWarn("warning");
         Logger::PrintErr("error");
+        Logger::PrintCrit("critical");
         Logger::ReleaseLogBuffer();
     }
 
@@ -65,6 +68,7 @@ int main()
         Logger::PrintLog("info");
         Logger::PrintWarn("warning");
         Logger::PrintErr("error");
+        Logger::PrintCrit("critical");
         Logger::ReleaseLogBuffer();
     }
 

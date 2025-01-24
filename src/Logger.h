@@ -11,7 +11,7 @@ class Logger
         // PUBLIC STRUCTS
         enum LogLevel
         {
-            All = 0,
+            Verbose = 0,
             Standard = 1,
             Quiet = 2,
             ErrorsOnly = 3
@@ -45,7 +45,9 @@ class Logger
         static void SetDatetimeFormat(const std::string format);
 
         static void SetLogFilePath(const std::string& path);
-        static void ToggleFileLogging(const bool enabled);
+        static void SetFileLogging(const bool enabled);
+
+        static void SetTraceMode(const bool enabled);
 
         
         // PRINTING FUNCTIONS
@@ -61,10 +63,11 @@ class Logger
         static void PrintErr(const std::string& message);
         static void PrintErr(const std::string& message, const bool overrideFiltering); 
 
+        static void PrintCrit(const std::string& message);
+        static void PrintCrit(const std::string& message, const bool overrideFiltering); 
 
         // OTHER PUBLIC FUNCTIONS
         static void ReleaseLogBuffer();
-        static void WriteToBuffer(const std::string& str);
         static void WriteLogToBuffer(const BufferedLog& log);
 };
 
