@@ -1,10 +1,9 @@
 #include <iostream>
-#include <ncurses.h>
 #include <ctime>
 #include <string>
-#include <vector>
 #include <sstream>
 #include <fstream>
+#include <vector>
 
 #include "Logger.h"
 
@@ -21,8 +20,8 @@ const string RESET = "\033[0m";
 
 
 // Variables
-vector<BufferedLog> logBuffer = vector<BufferedLog>();
-unsigned int maxLogBufferSize = 100;
+vector<BufferedLog> logs;
+int maxLogBufferSize = 128;
 
 string dateTimeFormat = "%H:%M:%S";
 bool dateTimeEnabled = false;
@@ -31,13 +30,9 @@ string logFilePath = "";
 bool fileLoggingEnabled;
 
 LogLevel logLevel = Standard;
-bool overrideFiltering = false;
-
-bool ncursesMode = false;
+bool overrideFilteringGlobal = false;
 
 bool nocolor = false;
-
-bool traceMode = false;
 
 // Internal methods
 string colorify(const string& color, const string& toColorify)
@@ -63,6 +58,7 @@ string logLevelToColor(const unsigned short logLevel)
 
         case 4:
             return MAGENTA;
+
 
         default:
             PrintErr("Unknown logLevel value!");
@@ -105,40 +101,6 @@ string getHeader(const int id)
     return header;
 }
 
-void print(const string &message, const int prior, const bool overrideFiltering)
-{
-    BufferedLog bufferedLog;
-    bufferedLog.Message = message;
-    bufferedLog.LogLevel = prior;
-    bufferedLog.Date = time(0);
-    logBuffer.push_back(bufferedLog);
-
-    if (traceMode || logBuffer.size() >= maxLogBufferSize)
-    {
-        ReleaseLogBuffer();
-    }
-}
-
-void clearLogBufer()
-{
-    logBuffer = vector<BufferedLog>();
-
-    BufferedLog bufferedLog;
-
-    if (!traceMode)
-    {
-        bufferedLog.Message = "[BUFFER CLEARED]";
-        if (nocolor)
-            bufferedLog.Message = colorify(MAGENTA,
-                bufferedLog.Message);
-        bufferedLog.IsRaw = true;
-        bufferedLog.LogLevel = 0;
-        bufferedLog.Date = time(0);
-
-        logBuffer.push_back(bufferedLog);
-    }
-}
-
 string getDatetimeHeader(time_t t)
 {
     tm* now = localtime(&t);
@@ -146,9 +108,13 @@ string getDatetimeHeader(time_t t)
     if (!now)
     {
         if (!nocolor)
+        {
             return RED + "[ERROR: NULL POINTER] " + RESET;
+        }
         else
+        {
             return "[ERROR: NULL POINTER] ";
+        }
     }
 
     char buffer[80];
@@ -157,15 +123,19 @@ string getDatetimeHeader(time_t t)
                 dateTimeFormat.c_str(), now) == 0) 
     {
         if (!nocolor)
+        {
             return RED + "[FORMAT ERROR] " + RESET;
+        }
         else
+        {
             return "[FORMAT ERROR] ";
+        }
     }
 
     return "[" + string(buffer) + "] ";
 }
 
-bool isValidDatetimeFormat(const std::string& format) 
+bool isValidDatetimeFormat(const string& format) 
 {
     time_t t = time(0);
     tm* now = localtime(&t);
@@ -206,14 +176,18 @@ int writeToFile(const string& filePath, const string& contents, const bool overw
     ofstream outputFile;
 
     if (overwrite)
+    {
        outputFile.open(expandedPath);
+    }
     else
+    {
         outputFile.open(expandedPath, ios::app);
+    }
 
     if(!outputFile)
     {
         PrintErr("Unable to open file '" + filePath + "' for writing!");
-        SetFileLogging(false);
+        ToggleFileLogging(false);
         return 1;
     }
 
@@ -234,14 +208,56 @@ int appendToFile(const string& filePath, const string& contents)
     return writeToFile(filePath, contents, false);
 }
 
+string formatLog(BufferedLog& log)
+{
+    if (log.IsRaw)
+    {
+        return log.Message + "\n";
+    }
+    else
+    {
+        if (dateTimeEnabled)
+        {
+            return getHeader(log.LogLevel) + getDatetimeHeader(log.Date) + log.Message + "\n";
+        }
+        else
+        {
+            return getHeader(log.LogLevel) + log.Message + "\n";
+        }
+    }
+}
+
+void print(const string& message, const int prior, const bool overrideFiltering)
+{
+    BufferedLog log;
+    log.Message = message;
+    log.LogLevel = prior;
+    log.OverrideFiltering = overrideFiltering;
+    log.Date = time(0);
+
+    if (log.LogLevel >= logLevel || overrideFilteringGlobal || log.OverrideFiltering)
+    {
+        clog<<formatLog(log);
+
+        if (fileLoggingEnabled)
+        {
+            logs.push_back(log);
+            if (logs.size() > (unsigned int)maxLogBufferSize)
+            {
+                FlushLogBuffer();
+            }
+        }
+    }
+}
+
 
 // Setters
-void SetVerbosity(const LogLevel verbosity) 
+void SetLoggerVerbosity(const LogLevel verbosity) 
 {
     logLevel = verbosity;
 }
 
-void SetVerbosity(const int verbosity)
+void SetLoggerVerbosity(const int verbosity)
 {
     if (!(verbosity >= 0 && verbosity <= 3))
     {
@@ -251,35 +267,34 @@ void SetVerbosity(const int verbosity)
     logLevel = LogLevel(verbosity);
 }
 
-void SetOverrideFiltering(const bool enabled)
+void ToggleLogFilteringOverride(const bool enabled)
 {
-    overrideFiltering = enabled;
+    overrideFilteringGlobal = enabled;
 }
 
-void SetNCursesMode(const bool enabled)
-{
-    ncursesMode = enabled;
-}
-
-void SetNoColor(const bool enabled)
+void ToggleLogColor(const bool enabled)
 {
     nocolor = enabled;
 }
 
 void SetMaxLogBufferSize(const int maxSize)
 {
-    if (maxSize < 20)
-        PrintWarn("Log buffer limit is being set to a low value!");
-
-    maxLogBufferSize = maxSize;
+    if (maxSize <= 0)
+    {
+        PrintErr("Cannot set max buffer size to a value that is less or equal to zero!");
+    }
+    else
+    {
+        maxLogBufferSize = maxSize;
+    }
 }
 
-void SetShowDatetime(const bool enabled)
+void ToggleLogDatetime(const bool enabled)
 {
     dateTimeEnabled = enabled;
 }
 
-void SetDatetimeFormat(const string format)
+void SetLogDatetimeFormat(const string format)
 {
     if (isValidDatetimeFormat(format))
         dateTimeFormat = format;
@@ -295,23 +310,18 @@ void SetLogFilePath(const string& path)
     }
     else
     {
-        PrintErr("File path cannot be set. Error opening file.");
+        PrintErr("Error opening file.");
     }
 }
 
-void SetFileLogging(const bool enabled)
+void ToggleFileLogging(const bool enabled)
 {
     fileLoggingEnabled = enabled;
 }
 
-void SetTraceMode(const bool enabled)
-{
-    traceMode = enabled;
-}
-
 
 // Getters
-LogLevel GetVerbosity()
+LogLevel GetLoggerVerbosity()
 {
     return logLevel;
 }
@@ -368,42 +378,16 @@ void PrintCrit(const string& message, const bool overrideFiltering)
     print(message, 4, overrideFiltering);
 }
 
-
 // Other public methods
-void ReleaseLogBuffer()
+void FlushLogBuffer()
 {
-    if (logBuffer.size() == 0)
-        return;
+    ostringstream logStream;
 
-    ostringstream logs;
-    if (ncursesMode) endwin();
-
-    for (const BufferedLog& log : logBuffer)
+    for (BufferedLog& log : logs)
     {
-        if (logLevel > log.LogLevel && !overrideFiltering && !log.OverrideFiltering) continue;
-        if (log.IsRaw)
-        {
-            logs<<log.Message<<"\n";
-        }
-        else
-        {
-            if (dateTimeEnabled)
-                logs<<getHeader(log.LogLevel)<<getDatetimeHeader(log.Date)<<log.Message<<"\n";
-            else
-                logs<<getHeader(log.LogLevel)<<log.Message<<"\n";
-        }
+        logStream<<formatLog(log);
     }
 
-    cout<<logs.str();
-    if (fileLoggingEnabled)
-    {
-        appendToFile(logFilePath, logs.str());
-    }
-
-    clearLogBufer();
-}
-
-void WriteLogToBuffer(const BufferedLog& log)
-{
-    logBuffer.push_back(log);
+    appendToFile(logFilePath, logStream.str());
+    logs = vector<BufferedLog>();
 }

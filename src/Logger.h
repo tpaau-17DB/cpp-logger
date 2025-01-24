@@ -24,27 +24,24 @@ struct BufferedLog
 };
 
 // GETTERS
-LogLevel GetVerbosity();
+LogLevel GetLoggerVerbosity();
 
 
 // SETTERS
-void SetVerbosity(const LogLevel verbosity);
-void SetVerbosity(const int verbosity);
+void SetLoggerVerbosity(const LogLevel verbosity);
+void SetLoggerVerbosity(const int verbosity);
 
-void SetOverrideFiltering(const bool enabled);
-void SetNCursesMode(const bool enabled);
+void ToggleLogFilteringOverride(const bool enabled);
 
-void SetNoColor(const bool enabled);
+void ToggleLogColor(const bool enabled);
 
 void SetMaxLogBufferSize(const int limit);
 
-void SetShowDatetime(const bool enabled);
-void SetDatetimeFormat(const std::string format);
+void ToggleLogDatetime(const bool enabled);
+void SetLogDatetimeFormat(const std::string format);
 
 void SetLogFilePath(const std::string& path);
-void SetFileLogging(const bool enabled);
-
-void SetTraceMode(const bool enabled);
+void ToggleFileLogging(const bool enabled);
 
 
 // PRINTING FUNCTIONS
@@ -63,8 +60,7 @@ void PrintErr(const std::string& message, const bool overrideFiltering);
 void PrintCrit(const std::string& message);
 void PrintCrit(const std::string& message, const bool overrideFiltering); 
 
-// OTHER PUBLIC FUNCTIONS
-void ReleaseLogBuffer();
-void WriteLogToBuffer(const BufferedLog& log);
+// Other public methods
+void FlushLogBuffer();
 
 #endif
