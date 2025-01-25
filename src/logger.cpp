@@ -251,7 +251,7 @@ void print(const string& message, const int prior, const bool overrideFiltering)
         else
         {
             PrintErr("logStream is a nullptr! Falling back to default stream.");
-            ToggleUseCustomOutputStream(false);
+            UseCustomOutputStream(false);
         }
 
         if (fileLoggingEnabled)
@@ -346,7 +346,7 @@ void SetLogOutputStream(ostringstream* stream)
     }
 }
 
-void ToggleUseCustomOutputStream(const bool enabled)
+void UseCustomOutputStream(const bool enabled)
 {
     useCustomLogStream = enabled;
 }
@@ -434,6 +434,6 @@ void FlushLogStream()
     else
     {
         PrintErr("logStream is a nullptr! Falling back to default stream.");
-        ToggleUseCustomOutputStream(false);
+        UseCustomOutputStream(false);
     }
 }

@@ -44,7 +44,7 @@ void SetLogFilePath(const std::string& path);
 void ToggleFileLogging(const bool enabled);
 
 void SetLogOutputStream(std::ostringstream* stream);
-void ToggleUseCustomOutputStream(const bool enabled);
+void UseCustomOutputStream(const bool enabled);
 
 
 // PRINTING FUNCTIONS
