@@ -1,4 +1,4 @@
-# Maintainer: Your Name <youremail@domain.com>
+# Maintainer: tpaau-17DB tpaau-17db_aur@tutamail.com
 pkgname=pretty-logger
 pkgver=1.0.0
 pkgrel=1
