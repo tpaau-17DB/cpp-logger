@@ -65,7 +65,7 @@ Also, you can disable filtering per-log by passing `overridePriority` set to
 <details><summary>Using colors</summary>
 
 Colored logs are enabled by default. Colors may not be supported by your
-'terminal, conflict with some features or just simply not fit your taste.
+terminal, conflict with some features or just simply not fit your taste.
 `ToggleLogColor(bool)` can be used to toggle colored logs.
 
 </details>
@@ -97,8 +97,6 @@ default and automatically flushed when it exceeds a specific size
 * The maximum buffer size can be set with `SetMaxFileLogBufferSize(int)`.
 * The log file path can be modified with `SetLogFilePath(string&)`.
 * To toggle file logging, use `ToggleFileLogging(bool)`.
-
----
 
 Remember to always flush file log buffer when the program exits, by calling
 `FlushFileLogBuffer()`.
