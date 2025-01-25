@@ -34,6 +34,9 @@ bool overrideFilteringGlobal = false;
 
 bool nocolor = false;
 
+bool useCustomLogStream = false;
+ostringstream* logStream = nullptr;
+
 // Internal methods
 string colorify(const string& color, const string& toColorify)
 {
@@ -237,14 +240,26 @@ void print(const string& message, const int prior, const bool overrideFiltering)
 
     if (log.LogLevel >= logLevel || overrideFilteringGlobal || log.OverrideFiltering)
     {
-        clog<<formatLog(log);
+        if (!useCustomLogStream)
+        {
+            clog<<formatLog(log);
+        }
+        else if (logStream)
+        {
+            *logStream<<formatLog(log);
+        }
+        else
+        {
+            PrintErr("logStream is a nullptr! Falling back to default stream.");
+            ToggleUseCustomOutputStream(false);
+        }
 
         if (fileLoggingEnabled)
         {
             logs.push_back(log);
             if (logs.size() > (unsigned int)maxLogBufferSize)
             {
-                FlushLogBuffer();
+                FlushFileLogBuffer();
             }
         }
     }
@@ -277,7 +292,7 @@ void ToggleLogColor(const bool enabled)
     nocolor = enabled;
 }
 
-void SetMaxLogBufferSize(const int maxSize)
+void SetMaxFileLogBufferSize(const int maxSize)
 {
     if (maxSize <= 0)
     {
@@ -317,6 +332,23 @@ void SetLogFilePath(const string& path)
 void ToggleFileLogging(const bool enabled)
 {
     fileLoggingEnabled = enabled;
+}
+
+void SetLogOutputStream(ostringstream* stream)
+{
+    if (!stream)
+    {
+        PrintErr("Stream pointer is invalid!");
+    }
+    else
+    {
+        logStream = stream;
+    }
+}
+
+void ToggleUseCustomOutputStream(const bool enabled)
+{
+    useCustomLogStream = enabled;
 }
 
 
@@ -379,7 +411,7 @@ void PrintCrit(const string& message, const bool overrideFiltering)
 }
 
 // Other public methods
-void FlushLogBuffer()
+void FlushFileLogBuffer()
 {
     ostringstream logStream;
 
@@ -390,4 +422,18 @@ void FlushLogBuffer()
 
     appendToFile(logFilePath, logStream.str());
     logs = vector<BufferedLog>();
+}
+
+void FlushLogStream()
+{
+    if (logStream)
+    {
+        clog<<logStream->str();
+        *logStream = ostringstream();
+    }
+    else
+    {
+        PrintErr("logStream is a nullptr! Falling back to default stream.");
+        ToggleUseCustomOutputStream(false);
+    }
 }

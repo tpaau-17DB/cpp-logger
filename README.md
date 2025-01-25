@@ -80,6 +80,47 @@ features or just simply not fit your taste.
 
 <details>
 
+<summary>Custom log stream</summary>
+
+By default, the logger directs all logs to the clog stream. However, this is
+not fixed, and you can set a custom log buffer controlled by you.
+
+
+You can set the buffer pointer using `SetLogOutputStream(ostringstream*)`.
+Then, tell the logger you want to use this custom log buffer by calling
+`ToggleUseCustomOutputStream(bool)`.
+
+
+Custom log buffer can be flushed into `clog` at any time using 
+`FlushLogStream()`.
+
+</details>
+
+
+<details>
+
+<summary>File logging</summary>
+
+File logging is a feature that allows you to output logs to a file. While this
+can be achieved using a custom log stream, using the logger's file logging
+feature is much more straightforward. The file log stream is buffered by
+default and automatically flushed when it exceeds a specific size
+(`128` logs by default).
+
+* The maximum buffer size can be set with `SetMaxFileLogBufferSize(int)`.
+* The log file path can be modified with `SetLogFilePath(string&)`.
+* To toggle file logging, use `ToggleFileLogging(bool)`.
+
+---
+
+Remember to always flush file log buffer when the program exits using
+`FlushFileLogBuffer()`.
+
+</details>
+
+
+<details>
+
 <summary>Displaying datetime</summary>
 
 The Display Dates feature adds a timestamp to each log entry.
