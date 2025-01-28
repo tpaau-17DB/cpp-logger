@@ -1,8 +1,11 @@
-# cpp-logger
+# PROJECT DISCONTINUED
+**This project is discontinued as I'm currently rewriting it in Rust**
+
+## cpp-logger
 A `C++` logger library
 
 
-# Installing
+## Installing
 First clone the repo with `git clone` and navigate to cloned repo with `cd`.
 
 
@@ -18,7 +21,7 @@ Or you can run `install` script that will install sources automatically to
 Then, include the `Logger.h` file in your project to use all its features.
 
 
-# Documentation
+## Documentation
 
 <details>
 
@@ -40,7 +43,7 @@ Note that debug logs will get filtered out by default.
 
 <summary>Filtering logs</summary>
 
-## By verbosity
+### By verbosity
 
 Verbosity controls which logs are getting suppressed and which are not.
 Method `SetLoggerVerbosity(...)` is used to set the verbosity value.
@@ -56,7 +59,7 @@ You can either use `LogLevel` `enum` or an `int` value to set verbosity to
 desired level. If you are using `int`, make sure that verbosity value is in the
 range of 0-3 or you will get an error.
 
-## Overriding log filtering
+### Overriding log filtering
 
 To toggle log filtering override, call `ToggleLogFilteringOverride(bool)`.
 
